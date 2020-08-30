@@ -7,9 +7,9 @@ easily replaces the style of the filter section.
 
 |      Day      |  Development  |      Goal     |      Notes     |
 |:-------------:|:-------------:|:-------------:|:--------------:|
-| 8.28.2020     | Content Cell  | Test the original version of the script and understand its basic functionallity. | Some features are missing or not working as expected such as: sorting, it seems only sorting by color is working when clicking select. For example when selecting blue, it filters correctly but sorting by Brand: Adidas nothing happens. Price filter has no icon. |
-| 8.29.2020     | Content Cell  |      asd      |
-| 8.30.2020     | Content Cell  |      asd      |
+| 8.28.2020     |  Test  | Test the original version of the script and understand its basic functionallity. | Some features are missing or not working as expected such as: sorting, it seems only sorting by color is working when clicking select. For example when selecting blue, it filters correctly but sorting by Brand: Adidas nothing happens. Some icons are missing. |
+| 8.29.2020     | DnD Day | Uploaded the project to github to work on a different computer. |
+| 8.30.2020     | Development | Started development |  |
 | 8.31.2020     | Content Cell  |      asd      |
 | 9.01.2020     | Content Cell  |      asd      |
 

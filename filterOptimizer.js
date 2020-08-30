@@ -1,3 +1,6 @@
+//set start point anywhere you want
+var start = new Date();
+
 // VARIABLES
 let menu = document.getElementById("js-pw-filters");
 let body = document.querySelector("body");
@@ -246,3 +249,10 @@ setTimeout(function () {
     styles.insertRule(s, 0);
   });
 }, 100);
+
+//when done,
+var end = new Date();
+
+//to profile milliseconds, just do
+var duration = end - start;
+console.log(duration)
