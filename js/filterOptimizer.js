@@ -1,17 +1,11 @@
-//set start point anywhere you want
-var start = new Date();
-
 // VARIABLES
 let menu = document.getElementById("js-pw-filters");
 let body = document.querySelector("body");
 let filtrarPor = document.getElementsByClassName("is-gridWall-filters")[0];
 let nuevoBtn = menu.getElementsByClassName("is-gridWall-filters__block");
 let marginTopRemove = menu.getElementsByClassName("is-modal__content")[0];
-let dropDownList = Array.from(
-  menu.getElementsByClassName("is-accordion__item js-facet-accordion")
-);
+let dropDownList = Array.from(menu.getElementsByClassName("is-accordion__item js-facet-accordion"));
 let links = [];
-
 // ESTILOS
 let stylesArray = [
   "[nuevosFiltros = 'true'] .is-modal__content{margin-top:0;border-top:0;}",
@@ -63,15 +57,12 @@ let stylesArray = [
   '[nuevosFiltros = "true"] #js-pw-filters .icon-plus:after {content:"";margin-left: -4px;margin-top: 7px;display: block;transform: rotate(135deg);width: 10px!important;background: black;height: 3px;border-radius: 10px 0px 0px 10px;}',
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters.is-accordion .is-accordion__item-wrapper[is-has-accordion-children]{    text-align: center;justify-content: center;display: flex;min-width: unset;padding: 0 15px;justify-content:center;margin: 0 3px;}",
 ];
-
 // SOLO DESKTOP
-
 //Si carga  y el ancho es mayor a 991px
 if (window.innerWidth > 991) {
   body.setAttribute("nuevosFiltros", true);
   initialSetUp();
 }
-
 // Al momento de reiniciar
 window.addEventListener("resize", function () {
   if (
@@ -103,7 +94,6 @@ window.addEventListener("resize", function () {
     }
   }
 });
-
 //MÉTODOS
 function initialSetUp() {
   filtrarPor.insertAdjacentHTML(
@@ -132,7 +122,6 @@ function initialSetUp() {
     }
   );
 }
-
 //Interacción Ver Más
 function verMas(e) {
   if (e.currentTarget.innerText === "MÁS +") {
@@ -199,7 +188,6 @@ function aplicarFiltros(event) {
     return contenedor.children[0].classList.toggle("toggled");
   }
 }
-
 function closeDrop(e) {
   for (let i = 0; i < dropDownList.length; i++)
     if (
@@ -249,10 +237,3 @@ setTimeout(function () {
     styles.insertRule(s, 0);
   });
 }, 100);
-
-//when done,
-var end = new Date();
-
-//to profile milliseconds, just do
-var duration = end - start;
-console.log(duration)
