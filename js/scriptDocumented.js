@@ -11,7 +11,6 @@ let marginTopRemove = menu.getElementsByClassName("is-modal__content")[0];
 // From the MENU (Filter Section) get each class "is-accordion" which is the <li> element and place them on an array.
 let dropDownList = Array.from(menu.getElementsByClassName("is-accordion__item js-facet-accordion"));
 let links = [];
-let test = "";
 
 // Styles Array
 let stylesArray = [
@@ -64,12 +63,7 @@ let stylesArray = [
   '[nuevosFiltros = "true"] #js-pw-filters .icon-plus:after {content:"";margin-left: -4px;margin-top: 7px;display: block;transform: rotate(135deg);width: 10px!important;background: black;height: 3px;border-radius: 10px 0px 0px 10px;}',
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters.is-accordion .is-accordion__item-wrapper[is-has-accordion-children]{    text-align: center;justify-content: center;display: flex;min-width: unset;padding: 0 15px;justify-content:center;margin: 0 3px;}",
 ];
-// Removes unwanted Filter Sections from the list.
-dropDownList.map((l, i) => {
-  if(l.style.display == "none"){
-    l.remove();
-  }
-});
+
 // This runs only if size of site is greater than 991 which is the size the site changes from a desktop to mobile view.
 if (window.innerWidth > 991) {
   // Makes an attribute NuevosFiltros and sets it to true.
@@ -124,14 +118,9 @@ function initialSetUp() {
   Array.from(nuevoBtn).map(function (btn) {
     btn.insertAdjacentHTML(
       "beforeend",
-      '<button class="seleccionar" new-btn="" style="width:100%;background:rgb(37, 135, 236);color:white;border:0;padding: 10px;height: auto;line-height: 1em;border-radius: 40px;margin-top: 15px;font-size: 13px;font-weight: 100;">Seleccionar</button>'
+      '<button onclick="aplicarFiltros(event)" class="seleccionar" new-btn="" style="width:100%;background:rgb(37, 135, 236);color:white;border:0;padding: 10px;height: auto;line-height: 1em;border-radius: 40px;margin-top: 15px;font-size: 13px;font-weight: 100;">Seleccionar</button>'
     );
   });
-  // TEST
-  Array.from($(".js-facet-value")).map(function (btn) {
-    $(btn).attr('onClick', 'aplicarFiltros(event);');
-  });
-  //$('.is-modal__main')[0].style.height = "inherit";
   // Adds a on click event to each of the Filter Inputs, Toggles
   /*
     Notes: It seems the event is added to each of the sections but after adding this code Discount Section
@@ -139,22 +128,20 @@ function initialSetUp() {
     line 109 is the reason why the discount input is not working...
     Color Filter Selection seems to work different than the rest of the inputs...
     Shoe Size seems to work different also... Basically any filter that is not a Basic square input...
-  
+  */
   Array.from(menu.getElementsByClassName("is-gridWall-filters__block")).map(
     function (element) {
       Array.from(element.querySelectorAll("form")).map(function (f) {
         f.addEventListener("click", (event) => {
           console.log("clicked!");
-          console.log(event);
           console.log(event.currentTarget.children[2].children[0]);
           event.currentTarget.children[2].children[0].checked = !event.currentTarget.children[2].children[0].checked;
           // This prevents the input click function
-          //return event.preventDefault();
+          return event.preventDefault();
         });
       });
     }
   );
-  */
 }
 // VerMas() Function
 function verMas(e) {
@@ -172,7 +159,6 @@ function mostrarRestante(e) {
   menu.classList.add("showR");
 
   dropDownList.map((l) => {
-    // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
     l.style.setProperty("display", "block", "important");
     setTimeout(function () {
       l.style.setProperty("opacity", "1", "");
@@ -184,7 +170,6 @@ function esconderRestante(e) {
   dropDownList.map((l, i) => {
     if (i >= 6) {
       l.style.setProperty("display", "none", "important");
-      //l.style.setProperty("visibility", "hidden", "important");
       setTimeout(function () {
         return l.style.setProperty("opacity", "0", "");
       }, 200);
@@ -194,14 +179,20 @@ function esconderRestante(e) {
 // AplicarFiltros() Function
 function aplicarFiltros(event) {
   let contenedor = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-  test = event;
   // After "Seleccionar" button is clicked if checked boxes in that Filter Section are > 1 show the quanity of filters applied.
   if (event.target.parentNode.querySelectorAll("input[type=checkbox]:checked").length > 0) {
-    // console.log("Checked boxes > 0");
+    console.log("Checked boxes > 0");
+    contenedor.getElementsByClassName("filterCount")[0].innerText = event.target.parentNode.querySelectorAll("input[type=checkbox]:checked").length;
+    contenedor.getElementsByClassName("filterCount")[0].style.display = "block";
+    contenedor.getElementsByClassName("is-accordion__item-icon")[0].style.display = "none";
+    contenedor.getElementsByClassName("is-accordion__item-icon")[1].style.display = "none";
     return contenedor.children[0].classList.toggle("toggled");
   } else {
     // After "Seleccionar" button is clicked if checked boxes in that Filter Section are = 0 hide the quanity filters number.
-    // console.log("Checked boxes = 0");
+    console.log("Checked boxes = 0");
+    contenedor.getElementsByClassName("filterCount")[0].style.display = "none";
+    contenedor.getElementsByClassName("is-accordion__item-icon")[0].style.display = "";
+    contenedor.getElementsByClassName("is-accordion__item-icon")[1].style.display = "";
     return contenedor.children[0].classList.toggle("toggled");
   }
 }
@@ -213,9 +204,8 @@ function closeDrop(e) {
       dropDownList[i].children[0].classList.remove("toggled");
     } else if (e.id === dropDownList[i].id) {
       dropDownList[i].children[0].classList.toggle("toggled");
-  }
+    }
 }
-
 // Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
 dropDownList.map(function (h, i) {
   h.addEventListener("click", (event) => {
