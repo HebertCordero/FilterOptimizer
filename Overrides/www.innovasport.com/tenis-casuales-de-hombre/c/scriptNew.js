@@ -12,7 +12,6 @@ let marginTopRemove = menu.getElementsByClassName("is-modal__content")[0];
 let dropDownList = Array.from(menu.getElementsByClassName("is-accordion__item js-facet-accordion"));
 let links = [];
 let test = "";
-let trash = [];
 
 // Styles Array
 let stylesArray = [
@@ -66,13 +65,11 @@ let stylesArray = [
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters.is-accordion .is-accordion__item-wrapper[is-has-accordion-children]{    text-align: center;justify-content: center;display: flex;min-width: unset;padding: 0 15px;justify-content:center;margin: 0 3px;}",
 ];
 // Removes unwanted Filter Sections from the list.
-/*
 dropDownList.map((l, i) => {
   if(l.style.display == "none"){
     l.remove();
   }
 });
-*/
 // This runs only if size of site is greater than 991 which is the size the site changes from a desktop to mobile view.
 if (window.innerWidth > 991) {
   // Makes an attribute NuevosFiltros and sets it to true.
@@ -118,11 +115,6 @@ function initialSetUp() {
     "afterbegin",
     '<div id="newScript" style="align-self:center;"><b>FILTRA POR:</b></div>'
   );
-  // Makes a "MORE" button on the end of the Filter Section.
-  menu.insertAdjacentHTML(
-    "beforeend",
-    '<div id="newScript" style="align-self:flex-start"><button onclick="verMas(event)" id="verMas" >MÁS <i>+</i></button></div>'
-  );
   // Adds a on click event to each of the Filter Inputs, Toggles
   /*
     Notes: It seems the event is added to each of the sections but after adding this code Discount Section
@@ -131,60 +123,19 @@ function initialSetUp() {
     Color Filter Selection seems to work different than the rest of the inputs...
     Shoe Size seems to work different also... Basically any filter that is not a Basic square input...
   */
-  FilterClearer();
-}
-// VerMas() Function
-function verMas(e) {
-  if (e.currentTarget.innerText === "MÁS +") {
-    console.log("mas clicked")
-    mostrarRestante(e.currentTarget);
-    return (e.currentTarget.innerHTML = "MENOS <i>-</i>");
-  } else if (e.currentTarget.innerText === "MENOS -") {
-    console.log("menos clicked");
-    esconderRestante(e.currentTarget);
-    return (e.currentTarget.innerHTML = "MÁS <i>+</i>");
-  }
 }
 // MostrarRestante() Function
 function mostrarRestante(e) {
   menu.classList.add("showR");
-  response = FilterClearer();
-  if (response == "not running!") {
-    console.log(1);
-    dropDownList.map((l) => {
-      // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
-      l.style.setProperty("display", "block", "important");
-      setTimeout(function () {
-        l.style.setProperty("opacity", "1", "important");
-      }, 200);
-      //}
-    });
-  } else if (response == true) {
-    console.log(4)
-  }
-}
-// EsconderRestante() Function
-function esconderRestante(e) {
-  response = FilterClearer();
-  if (response == "not running!") {
-    console.log("here")
-    dropDownList.map((l, i) => {
-      if (i >= 5) {
-        l.style.setProperty("display", "none", "important");
-        setTimeout(function () {
-          return l.style.setProperty("opacity", "1", "important");
-        }, 200);
-      }
-      menu.classList.remove("showR");
-    });
-  } else {
-    if (response == 1) {
-      console.log("wont hide / more than 5 fitlers");
-    } else if (response == 0) {
-      console.log("can hide / less than 5 fitlers");
-      menu.classList.remove("showR");
-    }
-  }
+  console.log(1);
+  dropDownList.map((l) => {
+    // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
+    l.style.setProperty("display", "block", "important");
+    setTimeout(function () {
+      l.style.setProperty("opacity", "1", "important");
+    }, 200);
+    //}
+  });
 }
 // CloseDrop() Function
 function closeDrop(e) {
@@ -196,69 +147,8 @@ function closeDrop(e) {
     dropDownList[i].children[0].classList.toggle("toggled");
   }
 }
-//
-function SectionFilter(e) {
-  //console.log(e.path[1])
-  verMas(event);
-  if ($('#verMas')[0].innerText === "MÁS +") {
-    console.log("mas is present");
-    mostrarRestante(event);
-    return;
-  } else if ($('#verMas')[0].innerText === "MENOS -") {
-    console.log("menos is present");
-    return;
-  }
-}
-// TEST
-function FilterClearer() {
-  trash = [];
-  trash2 = {};
-  promiseA = new Promise(function(resolve, reject) {
-    for (var i = 0; i < $('.js-facet-value').parent().length; i++) {
-      var arr = [];
-      //console.log($('.js-facet-value').parent()[i].children)
-      for (var j = 0; j < $('.js-facet-value').parent()[i].children.length; j++) {
-        //console.log($('.js-facet-value').parent()[i].children[j])
-        // MUST USE AFTER FILTER IS USED!
-        if ($('.js-facet-value').parent()[i].children[j].style.display == "block") {
-          arr.push("block")
-        } else if ($('.js-facet-value').parent()[i].children[j].style.display == "none") {
-          arr.push("none")
-        } else {
-          arr.push("err")
-        }
-      }
-      trash.push(arr)
-    }
-    resolve("Stuff worked!");
-  });
-  promiseA.then(function(result) {
-    console.log("in PROMIS.THEN")
-    console.log(trash);
-    // BECAUSE OF CONSOLE IT RUNS LIKE SHIT!
-    for (var i = 0; i < trash.length; i++) {
-      if (trash[i].includes('block')) {
-        $(dropDownList)[i].style.setProperty("display", "block", "important");
-      } else if (trash[i].includes('none')) {
-        $(dropDownList)[i].style.setProperty("display", "none", "important");
-      } else {
-        return "not running!";
-      }
-      if (jQuery.inArray("block", trash[i]) !== -1) {
-        console.log(trash[i])
-      } else {
-        trash.splice(i, i);
-      }
-      if (i == trash.length) {
-        console.log(trash);
-        if (trash.length > 5) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-    }
-  });
+function ShowData(e) {
+  console.log(e)
 }
 // Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
 dropDownList.map(function (h, i) {
@@ -289,8 +179,7 @@ setTimeout(function () {
   });
   $('.is-accordion__item-wrapper.toggled')[0].classList.remove("toggled");
   Array.from($(".is-accordion__item-wrapper")).map(function (btn) {
-    $(btn).attr('onClick', 'SectionFilter(event);');
+    $(btn).attr('onClick', 'ShowData(this.id);');
   });
-
-  esconderRestante(event);
+  mostrarRestante(event);
 }, 100);

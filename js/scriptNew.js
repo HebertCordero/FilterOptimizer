@@ -33,7 +33,7 @@ let stylesArray = [
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters__block { display:flex;flex-wrap:wrap }",
   "[nuevosFiltros = 'true'] #js-pw-filters is-gridWall-filters__checkbox,#js-pw-filters .is-gridWall-filters__radio{padding: 0 15px;margin-right: 2px;}",
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters__checkbox__title,#js-pw-filters .is-gridWall-filters__radio__title{padding:0;margin:0;text-transform: uppercase!important;font-size: 9px;    line-height: 1em;padding-top: 7px;padding-bottom: 5px;}",
-  "[nuevosFiltros = 'true'] #js-pw-filters .is-accordion__item:nth-child(n+7){display:none!important;opacity:0;transition:all 0.3s ease-in-out}",
+  "[nuevosFiltros = 'true'] #js-pw-filters .is-accordion__item:nth-child(n+7){opacity:0;transition:all 0.3s ease-in-out}",
   "[nuevosFiltros = 'true'] .is-gridWall-filters__textButton{font-size:10px!important}",
   "[nuevosFiltros = 'true'] #brand .is-gridWall-filters__block{display:grid;}",
   "[nuevosFiltros = 'true'] #brand form{flex:1;    max-width: 49%;}",
@@ -50,14 +50,14 @@ let stylesArray = [
   '[nuevosFiltros = "true"] #js-pw-filters .is-accordion[is-component="Accordion"] .is-accordion__item-wrapper {padding-right:0;z-index:1}',
   '[nuevosFiltros = "true"] #js-pw-filters .is-accordion[is-component="Accordion"] .facet__list {opacity:0;max-height: inherit;z-index: -1;top: 53px;padding-bottom: 0px;transition: all 0.3s;height:0;max-width:unset!important;box-shadow:rgba(0, 0, 0, 0.1) 0px -1px 8px;border: 1px solid rgb(228, 228, 228);position: absolute;left: 50%;transform: translateX(-50%);right: 0;margin: 0 auto;width: 120%;background: white;border-radius: 10px;padding: 15px 5px 0 5px;top:17px;padding-top:40px}',
   '[nuevosFiltros = "true"] #js-pw-filters .is-accordion[is-component="Accordion"] .is-accordion__item-wrapper.toggled + .facet__list {max-height:inherit!important;height:auto;opacity:1;z-index:2}',
-  "[nuevosFiltros = 'true'] .is-accordion__item-icon{position:relative}",
+  "[nuevosFiltros = 'true'] .is-accordion__item-icon{position:relative;right-4px;}",
   "[nuevosFiltros = 'true'] #js-pw-filters .is-accordion[is-component='Accordion']{display:flex;}",
   "[nuevosFiltros = 'true'] .is-accordion__item-wrapper.toggled{z-index:9!important}",
   '[nuevosFiltros = "true"] #js-pw-filters .is-accordion[is-component="Accordion"] .is-accordion__item-wrapper.toggled .is-accordion__item-title{z-index:9}',
   "[nuevosFiltros = 'true'] #js-pw-filters .is-accordion__item-title .filterCount{position:relative;display: none;top:0;right:0;margin-left: 5px;background:red;color: white;width: 16px;height: 16px;font-size: 10px;line-height: 1.6em;letter-spacing:0px}",
   "[nuevosFiltros = 'true'] .is-pw__wrapper.is-modal-opened.stuck-top .is-pw__products{padding-left:0;margin-left:0}",
   "[nuevosFiltros = 'true'].is-pw__products{padding-right:35px;margin-left:0}",
-  '[nuevosFiltros = "true"] #js-pw-filters .icon-minus:before {content:"";margin-left: -6px;margin-top: 9px;display: block;transform: rotate(-45deg);width: 10px!important;background: black;height: 3px;border-radius: 10px 0px 0px 10px;}',
+  '[nuevosFiltros = "true"] #js-pw-filters .icon-minus:before {content:"";margin-left: -5px;margin-top: 9px;display: block;transform: rotate(-45deg);width: 10px!important;background: black;height: 3px;border-radius: 10px 0px 0px 10px;}',
   '[nuevosFiltros = "true"] #js-pw-filters .icon-minus:after {content: "";width: 10px;height: 3px;background: black;display: block;transform: rotate(45deg);margin-top: -4px;border-radius: 0px 10px 10px 0px;}',
   '[nuevosFiltros = "true"] #js-pw-filters .icon-plus:before {border-radius:10px 0 0 10px;content:"";transform:rotate(45deg);position: absolute;width: 10px!important;height:3px;left: -10px;line-height: 20px;margin-top: 7px;background: black;}',
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters.is-accordion .is-accordion__item-title{display: flex;align-items: center;margin-right:10px;text-transform:uppercase;font-weight: 900;font-size: 10px;letter-spacing: 3px;}",
@@ -65,11 +65,13 @@ let stylesArray = [
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters.is-accordion .is-accordion__item-wrapper[is-has-accordion-children]{    text-align: center;justify-content: center;display: flex;min-width: unset;padding: 0 15px;justify-content:center;margin: 0 3px;}",
 ];
 // Removes unwanted Filter Sections from the list.
+/*
 dropDownList.map((l, i) => {
   if(l.style.display == "none"){
     l.remove();
   }
 });
+*/
 // This runs only if size of site is greater than 991 which is the size the site changes from a desktop to mobile view.
 if (window.innerWidth > 991) {
   // Makes an attribute NuevosFiltros and sets it to true.
@@ -120,18 +122,6 @@ function initialSetUp() {
     "beforeend",
     '<div id="newScript" style="align-self:flex-start"><button onclick="verMas(event)" id="verMas" >MÁS <i>+</i></button></div>'
   );
-  // Adds a button Aplicar Filtros to each of the Filter Section.
-  Array.from(nuevoBtn).map(function (btn) {
-    btn.insertAdjacentHTML(
-      "beforeend",
-      '<button class="seleccionar" new-btn="" style="width:100%;background:rgb(37, 135, 236);color:white;border:0;padding: 10px;height: auto;line-height: 1em;border-radius: 40px;margin-top: 15px;font-size: 13px;font-weight: 100;">Seleccionar</button>'
-    );
-  });
-  // TEST
-  Array.from($(".js-facet-value")).map(function (btn) {
-    $(btn).attr('onClick', 'aplicarFiltros(event);');
-  });
-  //$('.is-modal__main')[0].style.height = "inherit";
   // Adds a on click event to each of the Filter Inputs, Toggles
   /*
     Notes: It seems the event is added to each of the sections but after adding this code Discount Section
@@ -139,70 +129,47 @@ function initialSetUp() {
     line 109 is the reason why the discount input is not working...
     Color Filter Selection seems to work different than the rest of the inputs...
     Shoe Size seems to work different also... Basically any filter that is not a Basic square input...
-  
-  Array.from(menu.getElementsByClassName("is-gridWall-filters__block")).map(
-    function (element) {
-      Array.from(element.querySelectorAll("form")).map(function (f) {
-        f.addEventListener("click", (event) => {
-          console.log("clicked!");
-          console.log(event);
-          console.log(event.currentTarget.children[2].children[0]);
-          event.currentTarget.children[2].children[0].checked = !event.currentTarget.children[2].children[0].checked;
-          // This prevents the input click function
-          //return event.preventDefault();
-        });
-      });
-    }
-  );
   */
-}
-// VerMas() Function
-function verMas(e) {
-  if (e.currentTarget.innerText === "MÁS +") {
-    mostrarRestante(e.currentTarget);
-    return (e.currentTarget.innerHTML = "MENOS <i>-</i>");
-  } else {
-    menu.classList.remove("showR");
-    esconderRestante(e.currentTarget);
-    return (e.currentTarget.innerHTML = "MÁS <i>+</i>");
-  }
+  FilterClearer();
 }
 // MostrarRestante() Function
 function mostrarRestante(e) {
   menu.classList.add("showR");
-
-  dropDownList.map((l) => {
-    // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
-    l.style.setProperty("display", "block", "important");
-    setTimeout(function () {
-      l.style.setProperty("opacity", "1", "");
-    }, 200);
-  });
+  response = FilterClearer();
+  if (response == "not running!") {
+    console.log(1);
+    dropDownList.map((l) => {
+      // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
+      l.style.setProperty("display", "block", "important");
+      setTimeout(function () {
+        l.style.setProperty("opacity", "1", "important");
+      }, 200);
+      //}
+    });
+  } else if (response == true) {
+    console.log(4)
+  }
 }
 // EsconderRestante() Function
 function esconderRestante(e) {
-  dropDownList.map((l, i) => {
-    if (i >= 6) {
-      l.style.setProperty("display", "none", "important");
-      //l.style.setProperty("visibility", "hidden", "important");
-      setTimeout(function () {
-        return l.style.setProperty("opacity", "0", "");
-      }, 200);
-    }
-  });
-}
-// AplicarFiltros() Function
-function aplicarFiltros(event) {
-  let contenedor = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-  test = event;
-  // After "Seleccionar" button is clicked if checked boxes in that Filter Section are > 1 show the quanity of filters applied.
-  if (event.target.parentNode.querySelectorAll("input[type=checkbox]:checked").length > 0) {
-    console.log("Checked boxes > 0");
-    return contenedor.children[0].classList.toggle("toggled");
+  response = FilterClearer();
+  if (response == "not running!") {
+    console.log("here")
+    dropDownList.map((l, i) => {
+      if (i >= 5) {
+        l.style.setProperty("display", "none", "important");
+        setTimeout(function () {
+          return l.style.setProperty("opacity", "1", "important");
+        }, 200);
+      }
+      menu.classList.remove("showR");
+    });
   } else {
-    // After "Seleccionar" button is clicked if checked boxes in that Filter Section are = 0 hide the quanity filters number.
-    console.log("Checked boxes = 0");
-    return contenedor.children[0].classList.toggle("toggled");
+    if (response == 1) {
+      console.log("wont hide / more than 5 fitlers");
+    } else {
+      console.log("can hide / less than 5 fitlers");
+    }
   }
 }
 // CloseDrop() Function
@@ -212,10 +179,74 @@ function closeDrop(e) {
     if (e.id !== dropDownList[i].id && dropDownList[i].children[0].classList.contains("toggled")) {
       dropDownList[i].children[0].classList.remove("toggled");
     } else if (e.id === dropDownList[i].id) {
-      dropDownList[i].children[0].classList.toggle("toggled");
+    dropDownList[i].children[0].classList.toggle("toggled");
   }
 }
-
+//
+function SectionFilter(e) {
+  //console.log(e.path[1])
+  verMas(event);
+  if ($('#verMas')[0].innerText === "MÁS +") {
+    console.log("mas is present");
+    mostrarRestante(event);
+    return;
+  } else if ($('#verMas')[0].innerText === "MENOS -") {
+    console.log("menos is present");
+    return;
+  }
+}
+// TEST
+function FilterClearer() {
+  var trash = [];
+  for (var i = 0; i < $('.js-facet-value').parent().length; i++) {
+    var arr = [];
+    for (var j = 0; j < $('.js-facet-value').parent()[i].children.length; j++) {
+      //console.log($('.js-facet-value').parent()[i].children[j].style.display)
+      // MUST USE AFTER FILTER IS USED!
+      if ($('.js-facet-value').parent()[i].children[j].style.display == "block") {
+        arr.push($('.js-facet-value').parent()[i].children[j].style.display)
+      } else {
+        arr.push($('.js-facet-value').parent()[i].children[j].style.display)
+      }
+    }
+    trash.push(arr)
+  }
+  //console.log(trash)
+  for (var i = 0; i < trash.length; i++) {
+    //console.log($(dropDownList)[i]);
+    if (trash[i].includes('block')) {
+      $(dropDownList)[i].style.setProperty("display", "block", "important");
+      if (i == trash.length - 1) {
+        for (var i = 0; i < trash.length; i++) {
+          if (!trash[i].includes('block')) {
+            trash.splice (i, i);
+          }
+        }
+        if(trash.length > 5){
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    } else if (trash[i].includes('none')) {
+      $(dropDownList)[i].style.setProperty("display", "none", "important");
+      if (i == trash.length - 1) {
+        for (var i = 0; i < trash.length; i++) {
+          if (!trash[i].includes('block')) {
+            trash.splice (i, i);
+          }
+        }
+        if(trash.length > 5){
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    } else {
+      return "not running!";
+    }
+  }
+}
 // Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
 dropDownList.map(function (h, i) {
   h.addEventListener("click", (event) => {
@@ -224,6 +255,7 @@ dropDownList.map(function (h, i) {
   });
 });
 // Styles. Possible optimization...
+console.log("remove toggled");
 document.querySelector(".is-accordion__item-wrapper").classList.remove("toggled");
 document.querySelector("#js-pw-filters .is-accordion__item .is-accordion").classList.add("is-accordion--closed");
 document.querySelector("#js-pw-filters .is-accordion__item .is-accordion").style.maxHeight = "0";
@@ -242,4 +274,10 @@ setTimeout(function () {
   stylesArray.map(function (s) {
     styles.insertRule(s, 0);
   });
+  $('.is-accordion__item-wrapper.toggled')[0].classList.remove("toggled");
+  Array.from($(".is-accordion__item-wrapper")).map(function (btn) {
+    $(btn).attr('onClick', 'SectionFilter(event);');
+  });
+
+  esconderRestante(event);
 }, 100);
