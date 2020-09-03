@@ -122,17 +122,6 @@ function initialSetUp() {
     "beforeend",
     '<div id="newScript" style="align-self:flex-start"><button onclick="verMas(event)" id="verMas" >MÁS <i>+</i></button></div>'
   );
-  // Adds a button Aplicar Filtros to each of the Filter Section.
-  Array.from(nuevoBtn).map(function (btn) {
-    btn.insertAdjacentHTML(
-      "beforeend",
-      '<button class="seleccionar" new-btn="" style="display:none;width:100%;background:rgb(37, 135, 236);color:white;border:0;padding: 10px;height: auto;line-height: 1em;border-radius: 40px;margin-top: 15px;font-size: 13px;font-weight: 100;">Seleccionar</button>'
-    );
-  });
-  // TEST
-  Array.from($(".js-facet-value")).map(function (btn) {
-    $(btn).attr('onClick', 'aplicarFiltros(event);');
-  });
   // Adds a on click event to each of the Filter Inputs, Toggles
   /*
     Notes: It seems the event is added to each of the sections but after adding this code Discount Section
@@ -140,57 +129,74 @@ function initialSetUp() {
     line 109 is the reason why the discount input is not working...
     Color Filter Selection seems to work different than the rest of the inputs...
     Shoe Size seems to work different also... Basically any filter that is not a Basic square input...
-  
-  Array.from(menu.getElementsByClassName("is-gridWall-filters__block")).map(
-    function (element) {
-      Array.from(element.querySelectorAll("form")).map(function (f) {
-        f.addEventListener("click", (event) => {
-          console.log("clicked!");
-          console.log(event);
-          console.log(event.currentTarget.children[2].children[0]);
-          event.currentTarget.children[2].children[0].checked = !event.currentTarget.children[2].children[0].checked;
-          // This prevents the input click function
-          //return event.preventDefault();
-        });
-      });
-    }
-  );
   */
+  FilterClearer();
 }
 // VerMas() Function
 function verMas(e) {
   if (e.currentTarget.innerText === "MÁS +") {
+    console.log("mas clicked")
     mostrarRestante(e.currentTarget);
     return (e.currentTarget.innerHTML = "MENOS <i>-</i>");
-  } else if(e.currentTarget.innerText === "MENOS -") {
+  } else if (e.currentTarget.innerText === "MENOS -") {
+    console.log("menos clicked");
     menu.classList.remove("showR");
     esconderRestante(e.currentTarget);
     return (e.currentTarget.innerHTML = "MÁS <i>+</i>");
-  } /*else {
-    menu.classList.remove("showR");
-    $('#verMas')[0].innerHTML = "<i>-</i>"
-    //$('#verMas')[0].remove();
-    esconderRestante(e.currentTarget);
-    return;
-  }*/
+  }
 }
 // MostrarRestante() Function
 function mostrarRestante(e) {
   menu.classList.add("showR");
-
-  dropDownList.map((l) => {
-    // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
-    l.style.setProperty("display", "block", "important");
-    setTimeout(function () {
-      l.style.setProperty("opacity", "1", "important");
-    }, 200);
-  });
+  var isChecked = false;
+  for (var i = 0; i < $('.filterCount').length; i++) {
+    if ($('.filterCount')[i].style.cssText == "display: block;") {
+      isChecked = true;
+    }
+  }
+  if (!isChecked) {
+    console.log("test1")
+    dropDownList.map((l) => {
+      // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
+      l.style.setProperty("display", "block", "important");
+      setTimeout(function () {
+        l.style.setProperty("opacity", "1", "important");
+      }, 200);
+      //}
+    });
+  } else {
+    menu.classList.add("showR");
+    dropDownList.map((l) => {
+      // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
+      l.style.setProperty("display", "block", "important");
+      setTimeout(function () {
+        l.style.setProperty("opacity", "1", "");
+      }, 200);
+    });
+  }
 }
 // EsconderRestante() Function
 function esconderRestante(e) {
-  dropDownList.map((l, i) => {
-    if(dropDownList[9].style.display == "block"){
-      i=0;
+  var filterBox = $('.is-accordion__item.js-facet-accordion');
+  var isChecked = false;
+  for (var x = 0; x < $('.filterCount').length; x++) {
+    if ($('.filterCount')[i].style.cssText == "display: block;") {
+      isChecked = true;
+    }
+  }
+  if (!isChecked) {
+    for (var x = 0; x < filterBox.length; x++) {
+      if (filterBox[x].style.display == "none") {
+        filterBox[x].style.setProperty("display", "none", "important");
+        setTimeout(function () {
+          return filterBox[x].style.setProperty("opacity", "1", "important");
+        }, 200);
+      }
+    }
+    /*
+    dropDownList.map((l, i) => {
+      //if (dropDownList[9].style.display == "block") {
+      //  i = 0;
       if (i >= 5) {
         l.style.setProperty("display", "none", "important");
         //l.style.setProperty("visibility", "hidden", "important");
@@ -198,26 +204,19 @@ function esconderRestante(e) {
           return l.style.setProperty("opacity", "1", "important");
         }, 200);
       }
-    }
-  });
-}
-// AplicarFiltros() Function
-function aplicarFiltros(event) {
-  console.log("Im clicked!");
-  let contenedor = event.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-  test = event;
-  // After "Seleccionar" button is clicked if checked boxes in that Filter Section are > 1 show the quanity of filters applied.
-  if (event.target.parentNode.querySelectorAll("input[type=checkbox]:checked").length > 0) {
-    console.log("Checked boxes > 0");
-    //test.path[7].children[0].children[1].style.display = "none";
-    verMas(event);
-    return contenedor.children[0].classList.toggle("toggled");
+      //}
+    });
+    */
   } else {
-    // After "Seleccionar" button is clicked if checked boxes in that Filter Section are = 0 hide the quanity filters number.
-    console.log("Checked boxes = 0");
-    //test.path[7].children[0].children[2].style.display = "none";
-    verMas(event);
-    return contenedor.children[0].classList.toggle("toggled");
+    console.log("test2")
+    dropDownList.map((l, i) => {
+      if (i >= 5) {
+        l.style.setProperty("display", "none", "important");
+        setTimeout(function () {
+          return l.style.setProperty("opacity", "1", "important");
+        }, 200);
+      }
+    });
   }
 }
 // CloseDrop() Function
@@ -227,10 +226,48 @@ function closeDrop(e) {
     if (e.id !== dropDownList[i].id && dropDownList[i].children[0].classList.contains("toggled")) {
       dropDownList[i].children[0].classList.remove("toggled");
     } else if (e.id === dropDownList[i].id) {
-      dropDownList[i].children[0].classList.toggle("toggled");
+    dropDownList[i].children[0].classList.toggle("toggled");
   }
 }
-
+//
+function SectionFilter(e) {
+  //console.log(e.path[1])
+  verMas(event);
+  if ($('#verMas')[0].innerText === "MÁS +") {
+    console.log("mas is present");
+    mostrarRestante(event);
+    return;
+  } else if ($('#verMas')[0].innerText === "MENOS -") {
+    console.log("menos is present");
+    return;
+  }
+}
+// TEST
+function FilterClearer() {
+  var trash = [];
+  for (var i = 0; i < $('.js-facet-value').parent().length; i++) {
+    var arr = [];
+    for (var j = 0; j < $('.js-facet-value').parent()[i].children.length; j++) {
+      //console.log($('.js-facet-value').parent()[i].children[j].style.display)
+      // MUST USE AFTER FILTER IS USED!
+      if ($('.js-facet-value').parent()[i].children[j].style.display == "block") {
+        arr.push($('.js-facet-value').parent()[i].children[j].style.display)
+      } else {
+        arr.push($('.js-facet-value').parent()[i].children[j].style.display)
+      }
+    }
+    trash.push(arr)
+  }
+  //console.log(trash)
+  for (var i = 0; i < trash.length; i++) {
+    //console.log($(dropDownList)[i]);
+    if (trash[i].includes('block')) {
+      $(dropDownList)[i].style.setProperty("display", "block", "important");
+    } else if(trash[i].includes('none')) {
+      $(dropDownList)[i].style.setProperty("display", "none", "important");
+    }
+  }
+}
 // Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
 dropDownList.map(function (h, i) {
   h.addEventListener("click", (event) => {
@@ -239,6 +276,7 @@ dropDownList.map(function (h, i) {
   });
 });
 // Styles. Possible optimization...
+console.log("remove toggled");
 document.querySelector(".is-accordion__item-wrapper").classList.remove("toggled");
 document.querySelector("#js-pw-filters .is-accordion__item .is-accordion").classList.add("is-accordion--closed");
 document.querySelector("#js-pw-filters .is-accordion__item .is-accordion").style.maxHeight = "0";
@@ -257,4 +295,10 @@ setTimeout(function () {
   stylesArray.map(function (s) {
     styles.insertRule(s, 0);
   });
+  $('.is-accordion__item-wrapper.toggled')[0].classList.remove("toggled");
+  Array.from($(".is-accordion__item-wrapper")).map(function (btn) {
+    $(btn).attr('onClick', 'SectionFilter(event);');
+  });
+
+  esconderRestante(event);
 }, 100);
