@@ -12,6 +12,7 @@ let marginTopRemove = menu.getElementsByClassName("is-modal__content")[0];
 let dropDownList = Array.from(menu.getElementsByClassName("is-accordion__item js-facet-accordion"));
 let links = [];
 let test = "";
+let trash = [];
 
 // Styles Array
 let stylesArray = [
@@ -140,7 +141,6 @@ function verMas(e) {
     return (e.currentTarget.innerHTML = "MENOS <i>-</i>");
   } else if (e.currentTarget.innerText === "MENOS -") {
     console.log("menos clicked");
-    menu.classList.remove("showR");
     esconderRestante(e.currentTarget);
     return (e.currentTarget.innerHTML = "MÁS <i>+</i>");
   }
@@ -148,14 +148,9 @@ function verMas(e) {
 // MostrarRestante() Function
 function mostrarRestante(e) {
   menu.classList.add("showR");
-  var isChecked = false;
-  for (var i = 0; i < $('.filterCount').length; i++) {
-    if ($('.filterCount')[i].style.cssText == "display: block;") {
-      isChecked = true;
-    }
-  }
-  if (!isChecked) {
-    console.log("test1")
+  response = FilterClearer();
+  if (response == "not running!") {
+    console.log(1);
     dropDownList.map((l) => {
       // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
       l.style.setProperty("display", "block", "important");
@@ -164,59 +159,31 @@ function mostrarRestante(e) {
       }, 200);
       //}
     });
-  } else {
-    menu.classList.add("showR");
-    dropDownList.map((l) => {
-      // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
-      l.style.setProperty("display", "block", "important");
-      setTimeout(function () {
-        l.style.setProperty("opacity", "1", "");
-      }, 200);
-    });
+  } else if (response == true) {
+    console.log(4)
   }
 }
 // EsconderRestante() Function
 function esconderRestante(e) {
-  var filterBox = $('.is-accordion__item.js-facet-accordion');
-  var isChecked = false;
-  for (var x = 0; x < $('.filterCount').length; x++) {
-    if ($('.filterCount')[i].style.cssText == "display: block;") {
-      isChecked = true;
-    }
-  }
-  if (!isChecked) {
-    for (var x = 0; x < filterBox.length; x++) {
-      if (filterBox[x].style.display == "none") {
-        filterBox[x].style.setProperty("display", "none", "important");
-        setTimeout(function () {
-          return filterBox[x].style.setProperty("opacity", "1", "important");
-        }, 200);
-      }
-    }
-    /*
+  response = FilterClearer();
+  if (response == "not running!") {
+    console.log("here")
     dropDownList.map((l, i) => {
-      //if (dropDownList[9].style.display == "block") {
-      //  i = 0;
       if (i >= 5) {
         l.style.setProperty("display", "none", "important");
-        //l.style.setProperty("visibility", "hidden", "important");
         setTimeout(function () {
           return l.style.setProperty("opacity", "1", "important");
         }, 200);
       }
-      //}
+      menu.classList.remove("showR");
     });
-    */
   } else {
-    console.log("test2")
-    dropDownList.map((l, i) => {
-      if (i >= 5) {
-        l.style.setProperty("display", "none", "important");
-        setTimeout(function () {
-          return l.style.setProperty("opacity", "1", "important");
-        }, 200);
-      }
-    });
+    if (response == 1) {
+      console.log("wont hide / more than 5 fitlers");
+    } else if (response == 0) {
+      console.log("can hide / less than 5 fitlers");
+      menu.classList.remove("showR");
+    }
   }
 }
 // CloseDrop() Function
@@ -244,29 +211,54 @@ function SectionFilter(e) {
 }
 // TEST
 function FilterClearer() {
-  var trash = [];
-  for (var i = 0; i < $('.js-facet-value').parent().length; i++) {
-    var arr = [];
-    for (var j = 0; j < $('.js-facet-value').parent()[i].children.length; j++) {
-      //console.log($('.js-facet-value').parent()[i].children[j].style.display)
-      // MUST USE AFTER FILTER IS USED!
-      if ($('.js-facet-value').parent()[i].children[j].style.display == "block") {
-        arr.push($('.js-facet-value').parent()[i].children[j].style.display)
+  trash = [];
+  trash2 = {};
+  promiseA = new Promise(function(resolve, reject) {
+    for (var i = 0; i < $('.js-facet-value').parent().length; i++) {
+      var arr = [];
+      //console.log($('.js-facet-value').parent()[i].children)
+      for (var j = 0; j < $('.js-facet-value').parent()[i].children.length; j++) {
+        //console.log($('.js-facet-value').parent()[i].children[j])
+        // MUST USE AFTER FILTER IS USED!
+        if ($('.js-facet-value').parent()[i].children[j].style.display == "block") {
+          arr.push("block")
+        } else if ($('.js-facet-value').parent()[i].children[j].style.display == "none") {
+          arr.push("none")
+        } else {
+          arr.push("err")
+        }
+      }
+      trash.push(arr)
+    }
+    resolve("Stuff worked!");
+  });
+  promiseA.then(function(result) {
+    console.log("in PROMIS.THEN")
+    console.log(trash);
+    // BECAUSE OF CONSOLE IT RUNS LIKE SHIT!
+    for (var i = 0; i < trash.length; i++) {
+      if (trash[i].includes('block')) {
+        $(dropDownList)[i].style.setProperty("display", "block", "important");
+      } else if (trash[i].includes('none')) {
+        $(dropDownList)[i].style.setProperty("display", "none", "important");
       } else {
-        arr.push($('.js-facet-value').parent()[i].children[j].style.display)
+        return "not running!";
+      }
+      if (jQuery.inArray("block", trash[i]) !== -1) {
+        console.log(trash[i])
+      } else {
+        trash.splice(i, i);
+      }
+      if (i == trash.length) {
+        console.log(trash);
+        if (trash.length > 5) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     }
-    trash.push(arr)
-  }
-  //console.log(trash)
-  for (var i = 0; i < trash.length; i++) {
-    //console.log($(dropDownList)[i]);
-    if (trash[i].includes('block')) {
-      $(dropDownList)[i].style.setProperty("display", "block", "important");
-    } else if(trash[i].includes('none')) {
-      $(dropDownList)[i].style.setProperty("display", "none", "important");
-    }
-  }
+  });
 }
 // Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
 dropDownList.map(function (h, i) {
