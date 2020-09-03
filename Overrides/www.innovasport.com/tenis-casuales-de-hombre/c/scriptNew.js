@@ -148,7 +148,23 @@ function closeDrop(e) {
   }
 }
 function ShowData(e) {
-  console.log(e)
+  if(e.path[1].parentNode.id != "" || e.path[1].parentNode.id != null) {
+    var counter = 0;
+    var filterBoxes = $('.is-accordion__item.js-facet-accordion');
+    for(var i=0;i<filterBoxes.length;i++){
+      if(filterBoxes[i].style.display == "block"){
+        counter++;
+      }
+    }
+    if(counter < 6){
+      menu.classList.remove("showR");
+    } else {
+      menu.classList.add("showR");
+    }//$('.is-accordion__item.js-facet-accordion')[6].children[0].className
+    if(e.path[1].parentNode.children[0].className.includes(" toggled")){
+      menu.classList.add("showR");
+    }
+  }
 }
 // Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
 dropDownList.map(function (h, i) {
@@ -179,7 +195,7 @@ setTimeout(function () {
   });
   $('.is-accordion__item-wrapper.toggled')[0].classList.remove("toggled");
   Array.from($(".is-accordion__item-wrapper")).map(function (btn) {
-    $(btn).attr('onClick', 'ShowData(this.id);');
+    $(btn).attr('onClick', 'ShowData(event);');
   });
   mostrarRestante(event);
 }, 100);
