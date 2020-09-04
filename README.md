@@ -16,14 +16,14 @@ easily replaces the style of the filter section.
 | 9.03.2020 | Major Changes | Make the code simpler and more optimized. | <ul><li>Tried an alternative visual style for the FilterMenu</li><li>This new menu has no "show more" / "show less" button, instead it is automatic, if the sections are too many for the first row it will wrap and should expand to show all the Filters. If the filters are less than the needed to have a second line, then the menu is closed and only the relevant filters will be shown, will the OG code after clicking show more all the filters events even the empty ones were displayed.</li><li>Tried to implement the show more and less button, but encountered some issues that added to many variables to the display factor.</li><li>Code should be clean and fast to run easily in the console as it will be executed by a google tool.</li></ul>|
 
 ## The Project
-### Before
+#### Before
 ![Before 1](https://media.giphy.com/media/XEh9h9dICtY6WeGDUD/giphy.gif)
-### After
+#### After
 ![After 1](https://media.giphy.com/media/W6iEEjHHU8gaiIz9CW/giphy.gif)
-
-### Before
+---
+#### Before
 ![Before 2](https://media.giphy.com/media/fXzlHwFgMe2zkWG83j/giphy.gif)
-### After
+#### After
 ![After 2](https://media.giphy.com/media/jnhagIEPmWzQ5ydkgj/giphy.gif)
 
 ## Usage
@@ -33,6 +33,15 @@ git clone project
 cd FilterOptimizer
 copy the script code and run it on the console on https://www.innovasport.com/tenis-casuales-de-hombre/c/100010002070000000
 ```
+---
+### Alternative: Override
+Another alternative is using the override in the sources section, in inspector.
+#### Step 1
+![Step 1](https://media.giphy.com/media/WOqwFnDDH676FSZfuB/giphy.gif)
+#### Step 2
+![Step 2](https://media.giphy.com/media/Lm5wOvPmTr22y50bvi/giphy.gif)
+
+To use it simply Open Inspector > Sources > Navigator Show > Overrides > ENABLE > Chose Folder > Select Overrides Folder > DONE.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
