@@ -12,7 +12,6 @@ let marginTopRemove = menu.getElementsByClassName("is-modal__content")[0];
 let dropDownList = Array.from(menu.getElementsByClassName("is-accordion__item js-facet-accordion"));
 let links = [];
 let test = "";
-
 // Styles Array
 let stylesArray = [
   "[nuevosFiltros = 'true'] .is-modal__content{margin-top:0;border-top:0;}",
@@ -42,7 +41,7 @@ let stylesArray = [
   "[nuevosFiltros = 'true'] .is-gridWall-filters__checkbox__overlay,#js-pw-filters .is-gridWall-filters__radio__overlay,.is-gridWall-filters__checkbox__input:checked + span{background:unset;position: absolute;border: none;width: 100%;height: 100%;top: 50%;transform: translateY(-50%);border-radius: 30px;border: 1px solid gainsboro;}",
   "[nuevosFiltros = 'true'] #js-pw-filters .is-gridWall-filters__checkbox__input:checked + span{border-color: black;font-weight: 600}",
   "[nuevosFiltros = 'true'] #newScript b {color: #50a3f1; font-weight: 900;letter-spacing: 1px}",
-  "[nuevosFiltros = 'true'] #js-pw-filters.showR{height: 144px;}",
+  "[nuevosFiltros = 'true'] #js-pw-filters.showR{height: inherit;}",
   "[nuevosFiltros = 'true'] .is-accordion__item{border-top:0;}",
   "[nuevosFiltros = 'true'] #js-pw-filters.showR #newScript:first-child{align-self:flex-start}",
   "[nuevosFiltros = 'true'] #js-pw-filters {box-sizing:border-box;transition:all 0.3s;overflow:visible;max-width:1100px;width:100%;display:flex;height: 72px;align-items: center;border-radius: 60px;border: 1px solid #e4e4e4;padding: 15px 35px;box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);margin: 15px auto;left:0;right:0}",
@@ -115,31 +114,27 @@ function initialSetUp() {
     "afterbegin",
     '<div id="newScript" style="align-self:center;"><b>FILTRA POR:</b></div>'
   );
-  // Adds a on click event to each of the Filter Inputs, Toggles
-  /*
-    Notes: It seems the event is added to each of the sections but after adding this code Discount Section
-    is no longer working as expected. As options are selected but no filtering is effected, it seems the 
-    line 109 is the reason why the discount input is not working...
-    Color Filter Selection seems to work different than the rest of the inputs...
-    Shoe Size seems to work different also... Basically any filter that is not a Basic square input...
-  */
 }
-// MostrarRestante() Function
-function mostrarRestante(e) {
+/* MostrarRestante()
+ * This Function expands the FilterBox area
+ * and displays every section.
+ */
+function MostrarRestante(e) {
   menu.classList.add("showR");
-  console.log(1);
   dropDownList.map((l) => {
     // Added this pice of code so that hidden filters wont show when clicking "Ver Mas".
     l.style.setProperty("display", "block", "important");
     setTimeout(function () {
       l.style.setProperty("opacity", "1", "important");
     }, 200);
-    //}
   });
 }
-// CloseDrop() Function
-function closeDrop(e) {
-  /* Toggles the class "toggled" which i think toggles the dropdown after the change of styles is applied.  */
+/* ToggleFilter()
+ * This Function adds the toggle feature
+ * to each of the FilterSections which
+ * toggles the dropdown.
+ */
+function ToggleFilter(e) {
   for (let i = 0; i < dropDownList.length; i++)
     if (e.id !== dropDownList[i].id && dropDownList[i].children[0].classList.contains("toggled")) {
       dropDownList[i].children[0].classList.remove("toggled");
@@ -147,6 +142,14 @@ function closeDrop(e) {
     dropDownList[i].children[0].classList.toggle("toggled");
   }
 }
+/* ShowData()
+ * Decides if the Sections
+ * should hide if the total
+ * number of current sections 
+ * is > 6 if not all the 
+ * sections will be fully 
+ * displayed.
+ */
 function ShowData(e) {
   if(e.path[1].parentNode.id != "" || e.path[1].parentNode.id != null) {
     var counter = 0;
@@ -160,27 +163,30 @@ function ShowData(e) {
       menu.classList.remove("showR");
     } else {
       menu.classList.add("showR");
-    }//$('.is-accordion__item.js-facet-accordion')[6].children[0].className
+    }
     if(e.path[1].parentNode.children[0].className.includes(" toggled")){
       menu.classList.add("showR");
     }
   }
 }
-// Adds an event to each of the elements of the Filter Section. May possibly apply a CLICK event to all... Possible optimization...
+/* Onclcick initializer
+ * This section adds an event onclick
+ * to each of the Filters and toggles
+ * if clicked.
+ */
 dropDownList.map(function (h, i) {
   h.addEventListener("click", (event) => {
-    closeDrop(event.currentTarget);
+    ToggleFilter(event.currentTarget);
     return event.currentTarget.children[0].classList.toggle("toggled");
   });
 });
-// Styles. Possible optimization...
-console.log("remove toggled");
+// Applies Styles as soon as the script is loaded.
 document.querySelector(".is-accordion__item-wrapper").classList.remove("toggled");
 document.querySelector("#js-pw-filters .is-accordion__item .is-accordion").classList.add("is-accordion--closed");
 document.querySelector("#js-pw-filters .is-accordion__item .is-accordion").style.maxHeight = "0";
 let fixScroll = document.getElementsByClassName("is-pw__filters")[0];
 fixScroll.setAttribute("style", "padding-top:15px!important");
-// Creates the Stylesheet. Possible optimization...
+// Creates the Stylesheet.
 let style = (function () {
   var style = document.createElement("style");
   style.appendChild(document.createTextNode(""));
@@ -188,7 +194,7 @@ let style = (function () {
   return style;
 })();
 let styles = style.sheet;
-// Applies the Styles in the array style.
+// Applies the Styles in the array style and sets events
 setTimeout(function () {
   stylesArray.map(function (s) {
     styles.insertRule(s, 0);
@@ -197,5 +203,5 @@ setTimeout(function () {
   Array.from($(".is-accordion__item-wrapper")).map(function (btn) {
     $(btn).attr('onClick', 'ShowData(event);');
   });
-  mostrarRestante(event);
+  MostrarRestante(event);
 }, 100);

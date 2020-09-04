@@ -1,6 +1,6 @@
 # Filter Optimizer
 
-Filter Optimizer is a script that should run on the console of the [Site](https://www.innovasport.com/tenis-casuales-de-hombre/c/100010002070000000?q=%3Arelevance) which
+Filter Optimizer is a script that should run on the console of the [Site](https://www.innovasport.com/tenis-casuales-de-hombre/c/100010002070000000) which
 easily replaces the style of the filter section.
 
 ## My Documentation
